@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympic Medals Ranking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Ranking Olimpico de Medalhas</h1>
+        <p>Confira abaixo o ranking de medalhas filtrado por ano olimpico.</p>
+    </header>
+    <main>
+        <div class="controls">
+            <input type="text" id="searchCountry" placeholder="Search Country">
+            <select id="selectYear">
+                <option value="2020">2020</option>
+                <!-- More options can be added here -->
+            </select>
+        </div>
+        <table id="medalsTable">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Country</th>
+                    <th>Gold</th>
+                    <th>Silver</th>
+                    <th>Bronze</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="bodyTable">
+                <!-- Data will be populated by JavaScript -->
+            </tbody>
+        </table>
+        <div id="paginationButtons"></div>
+    </main>
+    <!-- <script src="test.js"></script> -->
+    <script src="script.js" defer></script>
+</body>
+</html>
