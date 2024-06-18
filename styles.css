@@ -111,7 +111,7 @@ main {
 }
 
 .imagem-direita {
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
     margin-top: 70px;
 }
