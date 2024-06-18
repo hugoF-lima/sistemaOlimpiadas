@@ -92,11 +92,12 @@ main {
 .conteudo {
     display: flex;
     align-items: flex-start;
-}
-
-.conteudo p {
-    flex: 1;
-    margin-right: 20px;
+    flex-wrap: wrap; 
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; 
+    padding: 20px; 
+    box-sizing: border-box; 
 }
 
 .texto-sobre {
@@ -110,9 +111,28 @@ main {
 }
 
 .imagem-direita {
-    max-width: 500px;
+    max-width: 100%;
     height: auto;
+    margin-top: 70px;
 }
+
+
+@media (max-width: 768px) {
+    .conteudo {
+        flex-direction: column; 
+        align-items: center; 
+    }
+
+    .texto-sobre {
+        margin-right: 0;
+        margin-bottom: 20px; 
+    }
+
+    .imagem-direita {
+        margin-top: 0; 
+    }
+}
+
 
 .controls input, .controls select {
     padding: 0.5em;
