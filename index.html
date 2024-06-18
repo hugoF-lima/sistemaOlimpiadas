@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +8,21 @@
 </head>
 <body>
     <header>
-        <h1>Ranking Olímpico de Medalhas</h1>
-        <p>Confira abaixo o ranking de medalhas filtrado por ano olímpico.</p>
+        <a href="index.html"><img class="imga" src="img/olimpiada-olympic-games-logo-0.png" alt="Simbolo Olímpico"></a>
+        <div class="header-centro">
+            <h1>Ranking Olímpico de Medalhas</h1>
+            <p>Confira abaixo o ranking de medalhas filtrado por ano olímpico.</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="about.html">Sobre</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         <div class="controls">
-            <input type="text" id="searchCountry" placeholder="Search Country">
+            <input type="text" id="searchCountry" placeholder="Procure um país...">
             <select id="selectYear">
                 <option value="2020">2020</option>
                 <!-- More options can be added here -->
@@ -23,10 +32,10 @@
             <thead>
                 <tr>
                     <th>Rank</th>
-                    <th>Country</th>
-                    <th>Gold</th>
-                    <th>Silver</th>
-                    <th>Bronze</th>
+                    <th>País</th>
+                    <th>Ouro 🥇</th>
+                    <th>Prata 🥈</th>
+                    <th>Bronze 🥉</th>
                     <th>Total</th>
                 </tr>
             </thead>
@@ -36,7 +45,6 @@
         </table>
         <div id="paginationButtons"></div>
     </main>
-    <!-- <script src="test.js"></script> -->
     <script src="script.js" defer></script>
 </body>
 </html>

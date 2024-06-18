@@ -5,7 +5,7 @@ import sqlite3
 app = Flask(__name__)
 CORS(app)
 #db_file = r"E:\Documents\Python_Scripts\main_env\src\05-May_2024\projeto_si_olymp\src\sistemasOlimpiadas.db"
-db_file = r"sistemasOlimpiadas.db""
+db_file = r"sistemasOlimpiadas.db"
 
 def get_data(year):
     conn = sqlite3.connect(db_file)
