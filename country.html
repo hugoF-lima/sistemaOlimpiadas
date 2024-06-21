@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Medal Details</title>
+    <title>Detalhes sobre país</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="scrapeimg.js"></script>
 </head>
 <body>
     <header>
@@ -18,16 +19,17 @@
     </header>
     <main>
         <img id="countryFlag" alt="Country Flag" style="width: 100px;">
-        <p>Total Medals through all Olympics:</p>
+        <p>Total de medalhas contabilizando todas as Edições:</p>
         <ul>
-            <li>Gold: <span id="goldMedals"></span></li>
-            <li>Silver: <span id="silverMedals"></span></li>
+            <li>Ouro: <span id="goldMedals"></span></li>
+            <li>Prata: <span id="silverMedals"></span></li>
             <li>Bronze: <span id="bronzeMedals"></span></li>
             <li>Total: <span id="totalMedals"></span></li>
         </ul>
-        <h2>About <span id="countryNameDescription"></span></h2>
+        <h2>Sobre <span id="countryNameDescription"></span></h2>
         <p id="countryDescription"></p>
-        <h2>Notable Olympic Athletes</h2>
+        <h2>Atletas notáveis:</h2>
+        <div id="athleteLabels"></div>
         <div id="athletesImages" style="margin-bottom: 50px;"></div>
     </main>
     <footer>
@@ -36,6 +38,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const countryData = JSON.parse(localStorage.getItem('countryData'));
+            for (item in countryData){
+                console.log(item);
+            }
             if (countryData) {
                 document.getElementById('countryName').textContent = countryData.country;
                 document.getElementById('countryNameDescription').textContent = countryData.country;
@@ -44,63 +49,62 @@
                 document.getElementById('bronzeMedals').textContent = countryData.bronze;
                 document.getElementById('totalMedals').textContent = countryData.total;
                 document.getElementById('countryFlag').src = countryData.flag;
+                
+
+                //Informações sobre país.
 
                 try {
-                    const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${countryData.country}`);
+                    const response = await fetch(`https://pt.wikipedia.org/api/rest_v1/page/summary/${countryData.country}`);
                     const data = await response.json();
                     if (data.extract) {
                         document.getElementById('countryDescription').textContent = data.extract;
                     } else {
-                        document.getElementById('countryDescription').textContent = 'Description not available.';
+                        document.getElementById('countryDescription').textContent = 'Descrição não encontrada.';
                     }
                 } catch (error) {
                     document.getElementById('countryDescription').textContent = 'Failed to fetch description.';
                 }
 
-                const athletesImagesContainer = document.getElementById('athletesImages');
-                console.log("Something", countryData);
-                for (const athlete of countryData.country) {
-                    try {
-                        const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${athlete}`);
-                        const data = await response.json();
-                        if (data.thumbnail && data.thumbnail.source) {
-                            const athleteContainer = document.createElement('div');
-                            athleteContainer.style.display = 'inline-block';
-                            athleteContainer.style.margin = '10px';
-                            athleteContainer.style.textAlign = 'center';
-                            
-                            const img = document.createElement('img');
-                            img.src = data.thumbnail.source;
-                            img.alt = athlete;
-                            img.style.width = '100px';
-                            img.style.display = 'block';
-                            img.style.margin = '0 auto';
-                            
-                            const link = document.createElement('a');
-                            link.href = `https://en.wikipedia.org/wiki/${athlete}`;
-                            link.target = '_blank';
-                            link.style.textDecoration = 'none';
-                            
-                            const name = document.createElement('p');
-                            name.textContent = athlete;
-                            name.style.color = 'gray';
-                            name.style.fontStyle = 'italic';
-                            name.style.marginTop = '5px';
-                            
-                            link.appendChild(name);
-                            athleteContainer.appendChild(img);
-                            athleteContainer.appendChild(link);
-                            athletesImagesContainer.appendChild(athleteContainer);
-                        }
-                    } catch (error) {
-                        console.error(`Failed to fetch image for ${athlete}:`, error);
-                    }
+                const athletesContainer = document.getElementById('athleteLabels');
+
+                // Ensure athletes and urls exist and have the same length
+                if (countryData.athletes && countryData.urls && countryData.athletes.length === countryData.urls.length) {
+                    countryData.athletes.forEach((athlete, index) => {
+                        const athleteDiv = document.createElement('div');
+                        athleteDiv.className = 'athlete';
+
+                        const nameLink = document.createElement('a');
+                        nameLink.href = countryData.urls[index]; // Set URL here
+                        nameLink.target = '_blank'; // Open link in new tab
+                        nameLink.textContent = athlete;
+                        nameLink.style.textDecoration = 'none';
+
+                        athleteDiv.appendChild(nameLink);
+                        athletesContainer.appendChild(athleteDiv);
+                    });
+                } else {
+                    athletesContainer.textContent = 'Parece que não houve retorno, volte ao inicio!';
                 }
+
+                try {
+                    const imageUrl = await scrapeAthleteImage(countryData.urls);
+                    if (imageUrl) {
+                        document.getElementById('result').innerHTML = `<img src="${imageUrl}" alt="Athlete Image">`;
+                        console.log('Athlete Image URL:', imageUrl);
+                    } else {
+                        document.getElementById('result').textContent = 'Image not found or unable to scrape.';
+                        console.log('Image not found or unable to scrape.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+                
             } else {
                 document.body.innerHTML = '<p>Error: No country data found.</p>';
             }
         });
-    </script>
+        </script>
+        
     <footer>
         <div class="footer-cont">
             <p>&copy; 2024 Ranking Olímpico de Medalhas. Todos os direitos reservados.</p>
